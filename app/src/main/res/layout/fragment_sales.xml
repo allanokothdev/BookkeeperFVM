@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SalesFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/record_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:padding="@dimen/dimen_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textAllCaps="false"
+            android:fontFamily="@font/open_sans_bold"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/daily_sales"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/open_sans_semibold"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:padding="@dimen/dimen_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textAllCaps="false"
+            android:fontFamily="@font/open_sans_bold"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/daily_sold_stock"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/subTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/open_sans_semibold"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:padding="@dimen/dimen_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textAllCaps="false"
+            android:fontFamily="@font/open_sans_bold"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/daily_gross_profit"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/subItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/open_sans_semibold"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/cart_info_data"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,27 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bookkeeperfvm.android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
+        android:name=".Bookkeeper"
+        android:fullBackupContent="@xml/backup_rules"
         android:allowBackup="true"
+        android:banner="@drawable/cover"
+        android:fullBackupOnly="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:preserveLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BookkeeperFVM">
-        <activity android:name=".Categories"></activity>
-        <activity android:name=".CreateStock" />
-        <activity android:name=".BrandProfile" />
-        <activity android:name=".CreateBusinessLocation" />
-        <activity android:name=".CreateBusiness" />
-        <activity android:name=".Splash" />
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="r">
+
+        <activity android:name=".BusinessProfile" />
+
+        <activity
+            android:name=".CreateBusinessLocation"
+            android:theme="@style/ColoredAppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CreateStock"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CreateBusiness"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/CustomAppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Splash"
+            android:theme="@style/CustomAppTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+
+        <receiver
+            android:name=".fcm.NotificationReceiver"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.bookkeeperfvm.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
     </application>
 
 </manifest>
