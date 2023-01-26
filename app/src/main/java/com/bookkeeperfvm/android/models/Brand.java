@@ -11,7 +11,7 @@ public class Brand implements Serializable {
     private String phone;
     private String walletAddress;
     private String currency;
-    private com.bookkeeperke.android.models.Location location;
+    private Location location;
     private String publisher;
     private String token;
     private String type;
@@ -23,7 +23,7 @@ public class Brand implements Serializable {
     public Brand() {
     }
 
-    public Brand(String id, String pic, String title, String phone, String walletAddress, String currency, com.bookkeeperke.android.models.Location location, String publisher, String token, String type, ArrayList<String> tags, ArrayList<String> products, boolean verification, long deadlineDate) {
+    public Brand(String id, String pic, String title, String phone, String walletAddress, String currency, Location location, String publisher, String token, String type, ArrayList<String> tags, ArrayList<String> products, boolean verification, long deadlineDate) {
         this.id = id;
         this.pic = pic;
         this.title = title;
@@ -88,11 +88,11 @@ public class Brand implements Serializable {
         this.currency = currency;
     }
 
-    public com.bookkeeperke.android.models.Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(com.bookkeeperke.android.models.Location location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

@@ -8,8 +8,6 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.bookkeeperfvm.android.constants.Constants;
-import com.bookkeeperfvm.android.models.Category;
-import com.bookkeeperfvm.android.models.User;
 import com.bookkeeperfvm.android.models.Wallet;
 
 import java.io.IOException;
@@ -17,17 +15,6 @@ import java.security.GeneralSecurityException;
 
 public class GetUser extends Application {
 
-    public static User getUser(Context context) {
-        User user = new User();
-        try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            SharedPreferences prefs = EncryptedSharedPreferences.create(Constants.KEY_STORE_REFERENCE, masterKeyAlias, context, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-            return new User(Constants.KEY_STORE_REFERENCE, prefs.getString(Constants.NAME, Constants.NAME), prefs.getString(Constants.PIC, Constants.PIC), prefs.getString(Constants.EMAIL, Constants.EMAIL),prefs.getString(Constants.PHONE_NUMBER, Constants.PHONE_NUMBER),  prefs.getString(Constants.GENDER,Constants.GENDER), prefs.getString(Constants.TOKEN,Constants.TOKEN),prefs.getString(Constants.ADDRESS,Constants.ADDRESS),null);
-        } catch (GeneralSecurityException | IOException exception){
-            exception.printStackTrace();
-        }
-        return user;
-    }
 
     public static Wallet getWallet(Context context) {
         Wallet wallet = new Wallet();
@@ -69,23 +56,6 @@ public class GetUser extends Application {
         }
     }
 
-    public static void saveUser(Context context, User user) {
-        try{
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(Constants.KEY_STORE_REFERENCE, masterKeyAlias, context, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(Constants.PIC, user.getPic());
-            editor.putString(Constants.NAME, user.getName());
-            editor.putString(Constants.EMAIL, user.getEmail());
-            editor.putString(Constants.GENDER, user.getGender());
-            editor.putString(Constants.PHONE_NUMBER, user.getPhone());
-            editor.putString(Constants.TOKEN, user.getToken());
-            editor.putString(Constants.ADDRESS, user.getAddress());
-            editor.apply();
-        } catch (GeneralSecurityException | IOException exception){
-            exception.printStackTrace();
-        }
-    }
 
     public static String fetchObject(Context context, String key) {
         String object = "0";
@@ -123,17 +93,4 @@ public class GetUser extends Application {
         }
     }
 
-    public static Category calculateProfitOrLoss(int sales, int expenses){
-        String type = "Profit";
-        int balance = 0;
-
-        if (sales > expenses){
-            type = "Profit";
-            balance = sales - expenses;
-        } else if (expenses > sales){
-            type = "Loss";
-            balance = expenses - sales;
-        }
-        return new Category(type,balance);
-    }
 }
