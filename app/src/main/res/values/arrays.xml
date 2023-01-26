@@ -1,0 +1,65 @@
+<resources>
+    <!-- Arrays &amp;-->
+    <string-array name="expenses">
+        <item>Stock</item>
+        <item>Advertising</item>
+        <item>Electricity</item>
+        <item>Furniture</item>
+        <item>Insurance</item>
+        <item>Maintenance</item>
+        <item>Repair</item>
+        <item>Rent</item>
+        <item>Security</item>
+        <item>Salary</item>
+        <item>Taxation</item>
+        <item>Transport</item>
+        <item>Water</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="payments">
+        <item>Bank</item>
+        <item>Cash</item>
+        <item>Debt</item>
+        <item>Mobile Money</item>
+    </string-array>
+
+    <string-array name="stockPayment">
+        <item>Bank</item>
+        <item>Cash</item>
+        <item>Mobile Money</item>
+    </string-array>
+
+    <string-array name="categoryTabs">
+        <item>Daily</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
+    <string-array name="businessTabs">
+        <item>Today Sales</item>
+        <item>Unsold Stock</item>
+        <item>Today Expenses</item>
+        <item>Customer Debts</item>
+        <item>Open Loans</item>
+        <item>Activity</item>
+    </string-array>
+
+
+    <string-array name="records">
+        <item>Expense</item>
+        <item>Menu</item>
+        <item>Sale</item>
+        <item>Stock</item>
+    </string-array>
+
+    <string-array name="business">
+        <item>Product</item>
+        <item>Services</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+</resources>

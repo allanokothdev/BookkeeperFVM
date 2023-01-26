@@ -1,0 +1,2 @@
+rootProject.name = "Bookkeeper FVM"
+include ':app'

@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.bookkeeperke.android.MainActivity">
+
+    <item
+        android:id="@+id/action_update_profile"
+        android:orderInCategory="100"
+        android:title="@string/update_user_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_passcode"
+        android:orderInCategory="100"
+        android:title="@string/reset_passcode"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_qr_code"
+        android:orderInCategory="100"
+        android:title="@string/qr_code"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:orderInCategory="100"
+        android:title="@string/sign_out"
+        app:showAsAction="never" />
+
+</menu>
