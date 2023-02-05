@@ -71,9 +71,27 @@ access credit, Bookkeeper may be able to contribute to these
 positive outcomes and promote gender equality.
 
 # Techstack
-
 Android JAVA - We developed the mobile app using Android JAVA, - Files are in the /app folder
 
-Firebase Firestore - We used Firebase Firestore (Serverless) as Backend to store Business Details
+Firebase Firestore - We've used Firebase Firestore as Backend to store Business Details and support User Authentication
 
-Firebase Functions - We integrated Firebase Functions to facilitate interactions between Mobile App and Blockchain ( Solidity Code) - Files are in the /functions folder.
+Firebase Functions - We've integrated Firebase Functions to facilitate interactions between Mobile App and Blockchain ( Solidity Code) - Files are in the /functions folder.
+
+We have these functions
+- CreateSale
+- CreateStock
+- fetchSales
+- fetchStock
+- CalculateCreditScore
+
+Blockchain - Hyperspace FEVM Testnet
+
+# Future Developments
+
+Security - Shift towards Self-Custodial wallet to promote wallet data privacy
+
+AI & Data Analytics Integration
+
+Incorporation of more data sources to support comprehensive credit scoring
+
+More App features to support WMSEs
