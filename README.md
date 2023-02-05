@@ -30,21 +30,6 @@ Challenges: Difficulty accessing loans from traditional banks due to lack of cre
 Sarah is a driven and motivated business owner who is passionate about sustainability and making a positive impact on the environment. She has been running her business for several years and has built a strong customer base, but struggles to access financing from traditional banks due to her limited credit history. Bookkeeper offers a solution that takes into account alternative data sources, like her sales and stock data, to help her secure financing and grow her business. She is eager to work with Bookkeeper to achieve her goals and provide a better future for her family.
 
 
-# Techstack
-
-Android JAVA
-
-Firebase Functions
-
-FEVM - Hyperspace
-
-
-# Files
-
-
-
-
-
 # Climate Impact
 Facilitating credit scoring for women-owned small and medium-sized
 enterprises (WSMEs) through Bookkeeper can have a positive
@@ -84,3 +69,11 @@ economic growth, leading to higher productivity, as well as increased
 income and education outcomes for families." By enabling WSMEs to
 access credit, Bookkeeper may be able to contribute to these
 positive outcomes and promote gender equality.
+
+# Techstack
+
+Android JAVA - We developed the mobile app using Android JAVA, - Files are in the /app folder
+
+Firebase Firestore - We used Firebase Firestore (Serverless) as Backend to store Business Details
+
+Firebase Functions - We integrated Firebase Functions to facilitate interactions between Mobile App and Blockchain ( Solidity Code) - Files are in the /functions folder.
