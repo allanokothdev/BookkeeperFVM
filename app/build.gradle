@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    //id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
 
@@ -72,6 +72,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-functions'
 
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
     implementation 'androidx.paging:paging-runtime:2.0.0'
@@ -89,6 +90,11 @@ dependencies {
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.0'
     implementation 'com.karumi:dexter:5.0.0'
+
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

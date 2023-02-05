@@ -69,27 +69,12 @@
                     android:textSize="15sp"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/primary_background_button"
-                    android:text="@string/upload_product_picture"
                     android:textAlignment="center"
                     android:id="@+id/uploadButton"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_60"/>
 
-
             </RelativeLayout>
-
-            <Button
-                android:layout_marginTop="@dimen/dimen_24"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:fontFamily="@font/open_sans_semibold"
-                android:background="@drawable/primary_background_button"
-                android:textColor="@color/colorWhite"
-                android:hint="@string/select_date"
-                android:textColorHint="@color/white"
-                android:id="@+id/dateButton"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_60"/>
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:drawablePadding="@dimen/dimen_5"
@@ -179,22 +164,6 @@
                 android:paddingEnd="@dimen/dimen_10"
                 android:paddingStart="@dimen/dimen_10"
                 android:layout_height="@dimen/dimen_60"/>
-
-            <TextView
-                android:fontFamily="@font/open_sans_bold"
-                android:layout_marginTop="24dp"
-                android:text="@string/select_payment_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <Spinner
-                android:layout_marginTop="8dp"
-                android:id="@+id/paymentSpinner"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/rounded_chat_container"
-                android:entries="@array/stockPayment" />
 
             <Button
                 android:textAllCaps="false"

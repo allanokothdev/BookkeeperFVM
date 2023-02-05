@@ -20,31 +20,25 @@ import com.bookkeeperfvm.android.adapters.BrandAdapter;
 import com.bookkeeperfvm.android.constants.Constants;
 import com.bookkeeperfvm.android.listeners.BrandItemClickListener;
 import com.bookkeeperfvm.android.models.Brand;
-import com.bookkeeperfvm.android.utils.GetUser;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements BrandItemClickListener, View.OnClickListener {
 
     private final Context mContext = MainActivity.this;
-    private final String TAG = this.getClass().getSimpleName();
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private final String currentUserID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private ListenerRegistration registration;
+
+    private final String currentUserID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private final List<Brand> objectList = new ArrayList<>();
     private BrandAdapter adapter;
 
@@ -66,11 +60,10 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         fetchObjects(currentUserID);
-        fetchToken();
     }
 
     private void fetchObjects(String objectID){
-        Query query = firebaseFirestore.collection(Constants.BUSINESSES).orderBy("id", Query.Direction.DESCENDING).whereArrayContains("tags",objectID);
+        Query query = firebaseFirestore.collection(Constants.BUSINESSES).orderBy("walletAddress", Query.Direction.DESCENDING).whereArrayContains("tags",objectID);
         registration = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
             if (queryDocumentSnapshots != null){
                 for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges()){
@@ -119,25 +112,8 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
         Bundle bundle = new Bundle();
         bundle.putSerializable("object",brand);
         intent.putExtras(bundle);
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(imageView, brand.getId()));
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(imageView, brand.getWalletAddress()));
         startActivity(intent,activityOptionsCompat.toBundle());
-    }
-
-    private void fetchToken(){
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                String token = task.getResult();
-                String msg = getString(R.string.msg_token_fmt, token);
-                Timber.d(msg);
-
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("token",token);
-                FirebaseDatabase.getInstance().getReference(Constants.TOKEN).child(currentUserID).updateChildren(hashMap);
-                GetUser.saveObject(mContext,Constants.TOKEN,token);
-            }else {
-                Timber.tag(TAG).w(task.getException(), "Fetching FCM registration token failed");
-            }
-        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -157,4 +133,6 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
             startActivity(new Intent(mContext, CreateBusiness.class));
         }
     }
+
+
 }

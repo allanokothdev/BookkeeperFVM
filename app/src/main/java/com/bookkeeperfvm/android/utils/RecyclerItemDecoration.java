@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bookkeeperke.android.R;
+import com.bookkeeperfvm.android.R;
 
 public class RecyclerItemDecoration extends RecyclerView.ItemDecoration {
 

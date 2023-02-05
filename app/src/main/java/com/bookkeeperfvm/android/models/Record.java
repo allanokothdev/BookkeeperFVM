@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 public class Record implements Serializable {
 
-    private String id;
-    private String pic;
+    private int id;
     private String title;
-    private String summary;
     private String recordType;
     private String timestamp;
     private long recordDate;
@@ -16,16 +14,13 @@ public class Record implements Serializable {
     private int quantity;
     private int salePrice;
     private String brandID;
-    private ArrayList<String> tags;
 
     public Record() {
     }
 
-    public Record(String id, String pic, String title, String summary, String recordType, String timestamp, long recordDate, int price, int quantity, int salePrice, String brandID, ArrayList<String> tags) {
+    public Record(int id, String title, String recordType, String timestamp, long recordDate, int price, int quantity, int salePrice, String brandID) {
         this.id = id;
-        this.pic = pic;
         this.title = title;
-        this.summary = summary;
         this.recordType = recordType;
         this.timestamp = timestamp;
         this.recordDate = recordDate;
@@ -33,23 +28,14 @@ public class Record implements Serializable {
         this.quantity = quantity;
         this.salePrice = salePrice;
         this.brandID = brandID;
-        this.tags = tags;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
     }
 
     public String getTitle() {
@@ -58,14 +44,6 @@ public class Record implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public String getRecordType() {
@@ -124,17 +102,9 @@ public class Record implements Serializable {
         this.brandID = brandID;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
-    }
-
     @Override
     public boolean equals(@androidx.annotation.Nullable Object obj){
         Record record = (Record) obj;
-        return id.matches(record.getId());
+        return id==record.getId();
     }
 }

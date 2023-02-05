@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -45,14 +44,10 @@ public class Splash extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        TextView loginTextView = findViewById(R.id.loginTextView);
         progressBar = findViewById(R.id.progressBar);
         linearLayout = findViewById(R.id.linearLayout);
         Button googleButton = findViewById(R.id.googleButton);
-        Button emailButton = findViewById(R.id.emailButton);
         googleButton.setOnClickListener(this);
-        emailButton.setOnClickListener(this);
-        loginTextView.setOnClickListener(this);
 
         getState();
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -79,7 +74,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener{
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
-                        boolean isNewUser = Objects.requireNonNull(task.getResult().getAdditionalUserInfo()).isNewUser();
                         sendUserToCreateActivity();
                     }else {
                         Toast.makeText(mContext,Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage()),Toast.LENGTH_SHORT).show();

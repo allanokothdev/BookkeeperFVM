@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,6 @@ public class BrandAdapter extends RecyclerView.Adapter{
     private final List<Brand> stringList;
     private final BrandItemClickListener brandItemClickListener;
     public static final int SUBSCRIBED = 0;
-    public static final int UNSUBSCRIBED = 1;
 
     public BrandAdapter(Context mContext, List<Brand> stringList, BrandItemClickListener brandItemClickListener) {
         this.stringList = stringList;
@@ -34,12 +32,7 @@ public class BrandAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemViewType(int position) {
-        Brand brand = stringList.get(position);
-        if (brand.getDeadlineDate()>System.currentTimeMillis()){
-            return SUBSCRIBED;
-        } else {
-            return UNSUBSCRIBED;
-        }
+        return SUBSCRIBED;
     }
 
     @NonNull
@@ -79,39 +72,14 @@ public class BrandAdapter extends RecyclerView.Adapter{
         void bind(int position) {
 
             Brand brand = stringList.get(position);
-            imageView.setTransitionName(brand.getId());
+            imageView.setTransitionName(brand.getWalletAddress());
             Glide.with(mContext.getApplicationContext()).load(brand.getPic()).placeholder(R.drawable.placeholder).into(imageView);
             textView.setText(brand.getTitle());
             subTextView.setText(brand.getPhone());
-            subItemTextView.setText(brand.getLocation().getAddress());
+            subItemTextView.setText(brand.getWalletAddress());
             itemView.setOnClickListener(v -> brandItemClickListener.onBrandItemClick(brand,imageView));
         }
     }
-
-    public class UnsubscribedViewHolder extends RecyclerView.ViewHolder{
-
-        private final ImageView imageView;
-        private final TextView textView;
-        private final TextView subTextView;
-
-        private UnsubscribedViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView);
-            textView = itemView.findViewById(R.id.textView);
-            subTextView = itemView.findViewById(R.id.subTextView);
-        }
-
-        void bind(int position) {
-
-            Brand brand = stringList.get(position);
-            imageView.setTransitionName(brand.getId());
-            Glide.with(mContext.getApplicationContext()).load(brand.getPic()).placeholder(R.drawable.placeholder).into(imageView);
-            textView.setText(brand.getTitle());
-            subTextView.setOnClickListener(v -> Toast.makeText(mContext,"Send RwF 5,000 to 0790006118 to renew your Records Subscription",Toast.LENGTH_SHORT).show());
-        }
-    }
-
 
 
 }

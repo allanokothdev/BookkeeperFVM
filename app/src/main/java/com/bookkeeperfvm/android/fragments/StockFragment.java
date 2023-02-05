@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
@@ -24,14 +25,19 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class StockFragment extends Fragment implements RecordItemClickListener {
+public class StockFragment extends Fragment {
 
-    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private ListenerRegistration registration;
+    private final FirebaseFunctions firebaseFunctions = FirebaseFunctions.getInstance();
+    private AVLoadingIndicatorView progressBar;
     private final List<Record> objectList = new ArrayList<>();
     private StockAdapter adapter;
     private Brand brand;
@@ -61,43 +67,53 @@ public class StockFragment extends Fragment implements RecordItemClickListener {
         View view = inflater.inflate(R.layout.fragment_stock, container, false);
 
         textView = view.findViewById(R.id.textView);
+        progressBar = view.findViewById(R.id.progressBar);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(),2));
-        adapter = new StockAdapter(getContext(), objectList, this);
+        adapter = new StockAdapter(getContext(), objectList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        fetchObjects();
+        fetchStock();
         return view;
     }
 
-    private void fetchObjects(){
-        Query query = firebaseFirestore.collection(Constants.RECORDS).orderBy("id", Query.Direction.DESCENDING).whereEqualTo("brandID",brand.getId()).whereArrayContains("tags",Constants.STOCK);
-        registration = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
-            if (queryDocumentSnapshots != null){
-                for (DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges()){
-                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                        Record object = documentChange.getDocument().toObject(Record.class);
-                        if (!objectList.contains(object) && !object.getRecordType().equals(Constants.MENU)){
-                            objectList.add(object);
+    private void fetchStock(){
+        progressBar.setVisibility(View.VISIBLE);
+        Map<String, Object> data = new HashMap<>();
+        data.put("key", brand.getPrivateKey());
+        data.put("recordType", Constants.STOCK);
+        firebaseFunctions.getHttpsCallable(Constants.FETCH_STOCKS).call(data).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+
+                ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
+                if (result != null){
+                    for (HashMap hashMap: result){
+
+                        int recordId = Integer.parseInt(hashMap.get("recordId").toString());
+                        String title = hashMap.get("title").toString();
+                        String recordType = hashMap.get("recordType").toString();
+                        String timestamp = hashMap.get("timestamp").toString();
+                        long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
+                        int price = Integer.parseInt(hashMap.get("price").toString());
+                        int quantity = Integer.parseInt(hashMap.get("quantity").toString());
+                        int salePrice = Integer.parseInt(hashMap.get("salePrice").toString());
+                        String brandID = hashMap.get("brandID").toString();
+
+                        Record record = new Record(recordId,title,recordType,timestamp,recordDate,price,quantity,salePrice,brandID);
+                        if (!objectList.contains(record)){
+                            objectList.add(record);
+                            progressBar.setVisibility(View.INVISIBLE);
                             adapter.notifyDataSetChanged();
-                            postMetrics();
-                        }
-                    }else if (documentChange.getType()==DocumentChange.Type.MODIFIED){
-                        Record object = documentChange.getDocument().toObject(Record.class);
-                        if (objectList.contains(object)){
-                            objectList.set(objectList.indexOf(object),object);
-                            adapter.notifyItemChanged(objectList.indexOf(object));
-                            postMetrics();
-                        }
-                    }else if (documentChange.getType()==DocumentChange.Type.REMOVED){
-                        Record object = documentChange.getDocument().toObject(Record.class);
-                        if (objectList.contains(object)){
-                            objectList.remove(object);
-                            adapter.notifyItemRemoved(objectList.indexOf(object));
-                            postMetrics();
                         }
                     }
+                } else {
+                    Toast.makeText(requireContext(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(View.INVISIBLE);
+
+            } else {
+                Toast.makeText(requireContext(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -105,19 +121,7 @@ public class StockFragment extends Fragment implements RecordItemClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        fetchObjects();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (registration != null){
-            registration.remove();
-        }
-    }
-
-    @Override
-    public void onRecordItemClick(Record record, ImageView imageView) {
+        fetchStock();
     }
 
     private int fetchMetrics(List<Record> transactionList){

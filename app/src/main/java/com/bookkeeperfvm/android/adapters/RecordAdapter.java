@@ -74,8 +74,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         void bind(int position) {
 
             Record record = stringList.get(position);
-            imageView.setTransitionName(record.getId());
-            Glide.with(mContext.getApplicationContext()).load(record.getPic()).placeholder(R.drawable.placeholder).into(imageView);
+            Glide.with(mContext.getApplicationContext()).load(R.drawable.logo).placeholder(R.drawable.placeholder).into(imageView);
             textView.setText(record.getTitle());
             subTextView.setText(record.getRecordType());
             subItemTextView.setText(mContext.getString(R.string.price_quantity,record.getQuantity(), Constants.CURRENCY,record.getPrice()));

@@ -64,35 +64,6 @@
                 android:layout_height="60dp"
                 android:text="@string/continue_with_google" />
 
-            <Button
-                android:fontFamily="@font/open_sans_semibold"
-                android:textAlignment="center"
-                android:paddingEnd="20dp"
-                android:paddingStart="35dp"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/primary_background_button"
-                android:drawableStart="@drawable/ic_mail_outline_blue_24dp"
-                android:drawablePadding="5dp"
-                android:layout_marginTop="@dimen/dimen_20"
-                android:id="@+id/emailButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/sign_in_with_email" />
-
-            <TextView
-                android:id="@+id/loginTextView"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
-                android:fontFamily="@font/open_sans_semibold"
-                android:layout_marginTop="@dimen/dimen_20"
-                android:textAlignment="center"
-                android:text="@string/login_already"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
         </LinearLayout>
 
 
