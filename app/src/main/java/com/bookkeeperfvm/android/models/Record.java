@@ -105,6 +105,6 @@ public class Record implements Serializable {
     @Override
     public boolean equals(@androidx.annotation.Nullable Object obj){
         Record record = (Record) obj;
-        return id==record.getId();
+        return title.equals(record.getTitle());
     }
 }

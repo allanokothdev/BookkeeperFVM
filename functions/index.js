@@ -39,14 +39,14 @@ exports.fetchStocks = functions.https.onCall(async (_data, context) => {
     const records = [];
     await Promise.all(response.map(async (i) => {
       const item = {
-        recordId: i.recordId.toNumber(),
+        recordId: i.recordId.toString(),
         title: i.title,
         recordType: i.recordType,
         timestamp: i.timestamp,
-        recordDate: i.recordDate.toNumber(),
-        price: i.price.toNumber(),
-        quantity: i.quantity.toNumber(),
-        salePrice: i.salePrice.toNumber(),
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
         brandID: i.brandID.toString(),
       };
       records.push(item);
@@ -73,14 +73,14 @@ exports.fetchSales = functions.https.onCall(async (_data, context) => {
     const records = [];
     await Promise.all(response.map(async (i) => {
       const item = {
-        recordId: i.recordId.toNumber(),
+        recordId: i.recordId.toString(),
         title: i.title,
         recordType: i.recordType,
         timestamp: i.timestamp,
-        recordDate: i.recordDate.toNumber(),
-        price: i.price.toNumber(),
-        quantity: i.quantity.toNumber(),
-        salePrice: i.salePrice.toNumber(),
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
         brandID: i.brandID.toString(),
       };
       records.push(item);
@@ -107,14 +107,14 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     const totalStock = [];
     await Promise.all(stockResponse.map(async (i) => {
       const item = {
-        recordId: i.recordId.toNumber(),
+        recordId: i.recordId.toString(),
         title: i.title,
         recordType: i.recordType,
         timestamp: i.timestamp,
-        recordDate: i.recordDate.toNumber(),
-        price: i.price.toNumber(),
-        quantity: i.quantity.toNumber(),
-        salePrice: i.salePrice.toNumber(),
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
         brandID: i.brandID.toString(),
       };
       totalStock.push(item);
@@ -126,14 +126,14 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     const totalSales = [];
     await Promise.all(salesResponse.map(async (i) => {
       const item = {
-        recordId: i.recordId.toNumber(),
+        recordId: i.recordId.toString(),
         title: i.title,
         recordType: i.recordType,
         timestamp: i.timestamp,
-        recordDate: i.recordDate.toNumber(),
-        price: i.price.toNumber(),
-        quantity: i.quantity.toNumber(),
-        salePrice: i.salePrice.toNumber(),
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
         brandID: i.brandID.toString(),
       };
       totalSales.push(item);

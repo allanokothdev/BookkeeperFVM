@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -112,7 +111,6 @@ public class BrandAdapter extends RecyclerView.Adapter{
                 }
             } else {
                 creditTextView.setText(R.string._0);
-                Toast.makeText(mContext, "You have No Records Uploaded", Toast.LENGTH_SHORT).show();
             }
         });
     }

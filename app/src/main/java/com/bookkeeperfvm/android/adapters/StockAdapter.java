@@ -111,7 +111,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder>{
         AVLoadingIndicatorView progressBar = view.findViewById(R.id.progressBar);
         Button button = view.findViewById(R.id.button);
 
-        Glide.with(mContext.getApplicationContext()).load(R.drawable.logo).placeholder(R.drawable.cover).into(imageView);
+        Glide.with(mContext.getApplicationContext()).load(R.drawable.logo).placeholder(R.drawable.lol).into(imageView);
         nameTextView.setText(stock.getTitle());
         quantityTextView.setText(String.valueOf(quantity));
         priceTextView.setText(mContext.getString(R.string.currency, Constants.CURRENCY, stock.getSalePrice()));

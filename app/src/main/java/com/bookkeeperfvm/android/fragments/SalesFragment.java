@@ -94,6 +94,9 @@ public class SalesFragment extends Fragment {
 
                     //Return data as an array and later loop over it to fetch the Sales Records
                     ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
+
+                    Toast.makeText(requireContext(),result.toString(),Toast.LENGTH_SHORT).show();
+
                     if (result != null){
                         for (HashMap hashMap: result){
 
@@ -104,7 +107,7 @@ public class SalesFragment extends Fragment {
                             long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
                             int price = Integer.parseInt(hashMap.get("price").toString());
                             int quantity = Integer.parseInt(hashMap.get("quantity").toString());
-                            int salePrice = Integer.parseInt(hashMap.get("salesPrice").toString());
+                            int salePrice = Integer.parseInt(hashMap.get("salePrice").toString());
                             String brandID = hashMap.get("brandID").toString();
 
                             //Map fetched records into Record Object
@@ -128,7 +131,7 @@ public class SalesFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
 
                 } else {
-                    Toast.makeText(requireActivity(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });
