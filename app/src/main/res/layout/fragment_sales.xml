@@ -31,86 +31,13 @@
             android:textAllCaps="false"
             android:fontFamily="@font/open_sans_bold"
             android:lineSpacingExtra="3sp"
-            android:text="@string/daily_sales"
+            android:text="@string/total_sales"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/cart_info_data"
             tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@font/open_sans_semibold"
-            android:lineSpacingExtra="3sp"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/cart_info_data"
-            android:textStyle="normal" />
-
-    </RelativeLayout>
-
-    <View
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:padding="@dimen/dimen_16">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:textAllCaps="false"
-            android:fontFamily="@font/open_sans_bold"
-            android:lineSpacingExtra="3sp"
-            android:text="@string/daily_sold_stock"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/cart_info_data"
-            tools:ignore="RelativeOverlap" />
-
-        <TextView
-            android:id="@+id/subTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@font/open_sans_semibold"
-            android:lineSpacingExtra="3sp"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/cart_info_data"
-            android:textStyle="normal" />
-
-    </RelativeLayout>
-
-    <View
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"/>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:padding="@dimen/dimen_16">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:textAllCaps="false"
-            android:fontFamily="@font/open_sans_bold"
-            android:lineSpacingExtra="3sp"
-            android:text="@string/daily_gross_profit"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/cart_info_data"
-            tools:ignore="RelativeOverlap" />
-
-        <TextView
-            android:id="@+id/subItemTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

@@ -1,15 +1,19 @@
 package com.bookkeeperfvm.android;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bookkeeperfvm.android.constants.Constants;
 import com.bookkeeperfvm.android.models.Brand;
 import com.bookkeeperfvm.android.models.Record;
+import com.bookkeeperfvm.android.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -115,6 +122,7 @@ public class CreateStock extends AppCompatActivity implements View.OnClickListen
     private void createRecord(String title, int salePrice, int quantity, int buyingPrice, long selectedDate) throws IOException {
         Record record = new Record(0,title,Constants.STOCK,getDate(selectedDate),selectedDate,buyingPrice,quantity,salePrice,brand.getWalletAddress());
 
+        //Sends data to be recorded on the FEVM via Firebase Functions
         Map<String, Object> data = new HashMap<>();
         data.put("key", brand.getPrivateKey());
         data.put("title", record.getTitle());
@@ -125,9 +133,14 @@ public class CreateStock extends AppCompatActivity implements View.OnClickListen
         data.put("quantity", record.getQuantity());
         data.put("salesPrice", record.getSalePrice());
         data.put("brandId", record.getBrandID());
-        firebaseFunctions.getHttpsCallable(Constants.CREATE_STOCK).call(record).addOnCompleteListener(task -> {
+
+        firebaseFunctions.getHttpsCallable(Constants.CREATE_STOCK).call(data).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 progressBar.setVisibility(View.INVISIBLE);
+                Map<String, Object> result = (Map<String, Object>) task.getResult().getData();
+                assert result != null;
+                String link = Objects.requireNonNull(result.get("link")).toString();
+                confirmTransaction(link);
             } else {
                 Toast.makeText(mContext, Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
@@ -135,12 +148,35 @@ public class CreateStock extends AppCompatActivity implements View.OnClickListen
         });
     }
 
-
-
     private String getDate(long time){
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTimeInMillis(time);
         return DateFormat.format("EEEE, dd MMMM yyyy", cal).toString();
+    }
+
+
+    private void confirmTransaction(String url){
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_confirm, null);
+        TextView subTextView = view.findViewById(R.id.subTextView);
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext);
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) view.getParent());
+        ScreenUtils screenUtils = new ScreenUtils(mContext);
+        behavior.setPeekHeight(screenUtils.getHeight());
+
+        subTextView.setOnClickListener(view12 -> {
+            try {
+                Intent indie = new Intent(Intent.ACTION_VIEW);
+                indie.setData(Uri.parse(url));
+                mContext.startActivity(indie);
+                bottomSheetDialog.dismiss();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        });
     }
 
 

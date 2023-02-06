@@ -210,7 +210,6 @@
     <string name="total_expenses">Total Expenses</string>
     <string name="daily_expenses">Daily Expenses</string>
     <string name="total_loan">Total Loan</string>
-    <string name="total_sales">Total Sales</string>
     <string name="add_employee">Add Employee</string>
     <string name="rwandan_franc">Rwandan Franc</string>
     <string name="daily_stock_sold">Daily Stock sold</string>
@@ -218,4 +217,12 @@
     <string name="daily_sales">Daily Sales</string>
     <string name="total_debt">Total Debt</string>
     <string name="enter_employee_phone_number">Enter Employee Phone Number</string>
+    <string name="successful_transaction">Successful Transaction</string>
+    <string name="view_on_the_explorer">View on the Explorer</string>
+    <string name="_0xd0fcf6912e09015324dd0899c1efaaba6a9f43ea">0xd0fcf6912e09015324dd0899c1efaaba6a9f43ea</string>
+    <string name="copy_your_wallet_address_and_deposit_fake_tokenns_from_hyperspace_faucet">Copy your wallet address and Deposit Fake Tokenns from Hyperspace Faucet</string>
+    <string name="copy_wallet_address">Copy Wallet Address</string>
+    <string name="total_sales">Total Sales</string>
+    <string name="_4_6">4.6</string>
+    <string name="score">Score</string>
 </resources>

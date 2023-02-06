@@ -78,44 +78,49 @@ public class StockFragment extends Fragment {
     }
 
     private void fetchStock(){
-        progressBar.setVisibility(View.VISIBLE);
-        Map<String, Object> data = new HashMap<>();
-        data.put("key", brand.getPrivateKey());
-        data.put("recordType", Constants.STOCK);
-        firebaseFunctions.getHttpsCallable(Constants.FETCH_STOCKS).call(data).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
+        try {
+            progressBar.setVisibility(View.VISIBLE);
+            Map<String, Object> data = new HashMap<>();
+            data.put("key", brand.getPrivateKey());
+            firebaseFunctions.getHttpsCallable(Constants.FETCH_STOCKS).call(data).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
 
-                ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
-                if (result != null){
-                    for (HashMap hashMap: result){
+                    ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
+                    if (result != null){
+                        for (HashMap hashMap: result){
 
-                        int recordId = Integer.parseInt(hashMap.get("recordId").toString());
-                        String title = hashMap.get("title").toString();
-                        String recordType = hashMap.get("recordType").toString();
-                        String timestamp = hashMap.get("timestamp").toString();
-                        long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
-                        int price = Integer.parseInt(hashMap.get("price").toString());
-                        int quantity = Integer.parseInt(hashMap.get("quantity").toString());
-                        int salePrice = Integer.parseInt(hashMap.get("salePrice").toString());
-                        String brandID = hashMap.get("brandID").toString();
+                            int recordId = Integer.parseInt(hashMap.get("recordId").toString());
+                            String title = hashMap.get("title").toString();
+                            String recordType = hashMap.get("recordType").toString();
+                            String timestamp = hashMap.get("timestamp").toString();
+                            long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
+                            int price = Integer.parseInt(hashMap.get("price").toString());
+                            int quantity = Integer.parseInt(hashMap.get("quantity").toString());
+                            int salePrice = Integer.parseInt(hashMap.get("salesPrice").toString());
+                            String brandID = hashMap.get("brandID").toString();
 
-                        Record record = new Record(recordId,title,recordType,timestamp,recordDate,price,quantity,salePrice,brandID);
-                        if (!objectList.contains(record)){
-                            objectList.add(record);
-                            progressBar.setVisibility(View.INVISIBLE);
-                            adapter.notifyDataSetChanged();
+                            Record record = new Record(recordId,title,recordType,timestamp,recordDate,price,quantity,salePrice,brandID);
+                            if (!objectList.contains(record)){
+                                objectList.add(record);
+                                progressBar.setVisibility(View.INVISIBLE);
+                                postStockTotal();
+                                adapter.notifyDataSetChanged();
+                            }
                         }
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.INVISIBLE);
+                    } else {
+                        Toast.makeText(requireActivity(), "Sorry, There are no Stock Record Uploaded", Toast.LENGTH_SHORT).show();
 
-            } else {
-                Toast.makeText(requireContext(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    }
+                    progressBar.setVisibility(View.INVISIBLE);
+
+                } else {
+                    Toast.makeText(requireActivity(), "Sorry, There are no Stock Record Uploaded", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -124,7 +129,7 @@ public class StockFragment extends Fragment {
         fetchStock();
     }
 
-    private int fetchMetrics(List<Record> transactionList){
+    private int fetchStockTotal(List<Record> transactionList){
         int total = 0;
         try {
             if (transactionList != null){
@@ -139,8 +144,8 @@ public class StockFragment extends Fragment {
         return total;
     }
 
-    private void postMetrics(){
-        textView.setText(getString(R.string.currency,Constants.CURRENCY, fetchMetrics(objectList)));
+    private void postStockTotal(){
+        textView.setText(getString(R.string.currency,Constants.CURRENCY, fetchStockTotal(objectList)));
     }
 }
 

@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
         fetchObjects(currentUserID);
     }
 
+    //Fetch user's Businesses from Firebase Firestore using their Firebase User ID as a filter
     private void fetchObjects(String objectID){
         Query query = firebaseFirestore.collection(Constants.BUSINESSES).orderBy("walletAddress", Query.Direction.DESCENDING).whereArrayContains("tags",objectID);
         registration = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -95,8 +96,10 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
     public void onResume() {
         super.onResume();
         fetchObjects(currentUserID);
+        adapter.notifyDataSetChanged();
     }
 
+    //Stop Firebase from listening to new database events, (Saves Database Cost)
     @Override
     public void onStop() {
         super.onStop();
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
     }
 
 
+    //Proceed to respective Business Profile
     @Override
     public void onBrandItemClick(Brand brand, ImageView imageView) {
         Intent intent = new Intent(mContext, BusinessProfile.class);
@@ -116,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
         startActivity(intent,activityOptionsCompat.toBundle());
     }
 
+    //Sign Out
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -129,7 +134,10 @@ public class MainActivity extends AppCompatActivity implements BrandItemClickLis
             builder.setNegativeButton("Hell No", (dialog, which) -> { });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+
         } else if (view.getId() == R.id.floatingActionButton){
+
+            //Create new Business on Bookkeeper
             startActivity(new Intent(mContext, CreateBusiness.class));
         }
     }

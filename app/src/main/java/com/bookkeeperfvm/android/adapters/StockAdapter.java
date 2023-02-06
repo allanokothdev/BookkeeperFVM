@@ -2,6 +2,8 @@ package com.bookkeeperfvm.android.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -19,7 +21,9 @@ import com.bookkeeperfvm.android.R;
 import com.bookkeeperfvm.android.constants.Constants;
 import com.bookkeeperfvm.android.models.Record;
 import com.bookkeeperfvm.android.utils.GetUser;
+import com.bookkeeperfvm.android.utils.ScreenUtils;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -147,9 +151,12 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder>{
 
         button.setOnClickListener(v -> {
 
+            //Records new SALE REcord on the FEVM data storage
             Record record = new Record(0,stock.getTitle(),Constants.SALES,getDate(),System.currentTimeMillis(),stock.getSalePrice(),quantity,stock.getPrice(),stock.getBrandID());
             Map<String, Object> data = new HashMap<>();
-            data.put("key", GetUser.getWallet(mContext).getPrivateKey());
+
+            //Fetches Private Key from Secured Local Storage
+            data.put("key", GetUser.getWallet(mContext, record.getBrandID()).getPrivateKey());
             data.put("title", record.getTitle());
             data.put("recordType", record.getRecordType());
             data.put("timestamp", record.getTimestamp());
@@ -158,13 +165,17 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder>{
             data.put("quantity", record.getQuantity());
             data.put("salesPrice", record.getSalePrice());
             data.put("brandId", record.getBrandID());
-            firebaseFunctions.getHttpsCallable(Constants.CREATE_SALE).call(record).addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    progressBar.setVisibility(View.INVISIBLE);
+            firebaseFunctions.getHttpsCallable(Constants.CREATE_SALE).call(data).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Map<String, Object> result = (Map<String, Object>) task.getResult().getData();
+                    assert result != null;
+                    String link = Objects.requireNonNull(result.get("link")).toString();
+                    confirmTransaction(link);
+
                 } else {
-                    Toast.makeText(mContext, Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(mContext, "Try Again", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             });
         });
     }
@@ -176,9 +187,27 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder>{
         return DateFormat.format("EEEE, dd MMMM yyyy", cal).toString();
     }
 
-    private String getWeekYear(){
-        Calendar cal = Calendar.getInstance(Locale.getDefault());
-        cal.setTimeInMillis(System.currentTimeMillis());
-        return DateFormat.format("MMMM yyyy", cal).toString();
+    private void confirmTransaction(String url){
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(mContext).inflate(R.layout.bottom_sheet_confirm, null);
+        TextView subTextView = view.findViewById(R.id.subTextView);
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext);
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from((View) view.getParent());
+        ScreenUtils screenUtils = new ScreenUtils(mContext);
+        behavior.setPeekHeight(screenUtils.getHeight());
+
+        subTextView.setOnClickListener(view12 -> {
+            try {
+                Intent indie = new Intent(Intent.ACTION_VIEW);
+                indie.setData(Uri.parse(url));
+                mContext.startActivity(indie);
+                bottomSheetDialog.dismiss();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        });
     }
 }

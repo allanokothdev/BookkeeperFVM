@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/transparent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:elevation="@dimen/dimen_10"
+        android:padding="@dimen/dimen_16"
+        android:layout_margin="@dimen/dimen_20"
+        android:background="@drawable/rounded_layout_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_done_gr"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_marginTop="@dimen/dimen_40"
+            android:layout_marginBottom="@dimen/dimen_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/successful_transaction"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/subTextView"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/open_sans_semibold"
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:paddingBottom="@dimen/dimen_15"
+            android:paddingTop="@dimen/dimen_15"
+            android:background="@drawable/trans_background_button"
+            android:text="@string/view_on_the_explorer"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

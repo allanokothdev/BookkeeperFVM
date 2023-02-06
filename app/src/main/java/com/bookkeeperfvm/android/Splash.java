@@ -69,6 +69,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    //Google Sign In Authentication
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
         firebaseAuth.signInWithCredential(credential)
@@ -92,6 +93,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    //Send User to Main Activity
     private void sendUserToCreateActivity(){
         startActivity(new Intent(mContext, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         overridePendingTransition(R.anim.enter_from_right,R.anim.exit_to_left);

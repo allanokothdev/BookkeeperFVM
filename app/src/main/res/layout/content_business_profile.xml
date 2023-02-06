@@ -15,6 +15,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:layout_marginStart="@dimen/padding_10"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/dimen_5"
+            android:text="@string/copy_your_wallet_address_and_deposit_fake_tokenns_from_hyperspace_faucet"
+            android:textSize="14sp"
+            android:fontFamily="@font/open_sans_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:padding="@dimen/dimen_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/copyImageView"
+                android:textIsSelectable="true"
+                android:textColor="@color/black"
+                android:id="@+id/textView"
+                android:text="@string/_0xd0fcf6912e09015324dd0899c1efaaba6a9f43ea"
+                android:textSize="14sp"
+                android:fontFamily="@font/open_sans_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/padding_10"
+                android:contentDescription="@string/copy_wallet_address"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/ic_baseline_content_copy_24"
+                android:id="@+id/copyImageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"/>
+
+        </RelativeLayout>
+
+
         <com.google.android.material.tabs.TabLayout
             android:layout_marginTop="@dimen/dimen_8"
             android:id="@+id/tabLayout"

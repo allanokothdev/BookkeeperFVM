@@ -59,6 +59,7 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
     private CountryCodePicker countryCodePicker;
     private String walletAddress;
 
+    //CREATE NEW WALLET ADDRESS AND PRIVATE KEY FOR THE BUSINESS
     @Override
     protected void onStart() {
         super.onStart();
@@ -141,6 +142,8 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
                 publishObject(brand);
 
             } else {
+
+                //STORE BUSINESS IMAGE IN FIREBASE STORAGE
                 final StorageReference ref = FirebaseStorage.getInstance().getReference().child(Constants.BUSINESSES).child(System.currentTimeMillis() + ".png");
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),mainImageUri);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -163,6 +166,7 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
         } catch (IOException e){e.printStackTrace(); }
     }
 
+    //PUBLISH BUSINESS DETAILS IN FIREBASE FIRESTORE STORAGE
     private void publishObject(Brand brand){
         firebaseFirestore.collection(Constants.BUSINESSES).document(brand.getWalletAddress()).set(brand).addOnSuccessListener(unused -> {
             progressBar.setVisibility(View.GONE);
@@ -171,6 +175,7 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    //FETCHES SELECTED IMAGE FROM USERS PHONE
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -183,6 +188,7 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
         }catch (Exception e){e.printStackTrace(); }
     }
 
+    //STORES BUSINESS IMAGE IN FIREBASE STORAGE
     private void postImage(Uri mainImageUri){
         try {
             final StorageReference ref = FirebaseStorage.getInstance().getReference().child(Constants.BUSINESSES).child(System.currentTimeMillis() + ".png");
@@ -206,6 +212,7 @@ public class CreateBusiness extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    //CREATES NEW WALLET ADDRESS & PRIVATE KET FOR THE BUSINESS
     private void createWallet() {
         firebaseFunctions.getHttpsCallable(Constants.CREATE_WALLET).call().addOnCompleteListener(task -> {
             if (task.isSuccessful()){

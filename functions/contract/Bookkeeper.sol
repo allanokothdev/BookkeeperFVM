@@ -56,20 +56,20 @@ contract Bookkeeper is ReentrancyGuard {
 
 
     /* Returns only stock uploaded by a respective business */
-    function fetchStocks(address _brandId) public view returns (Record[] memory) {
+    function fetchStocks() public view returns (Record[] memory) {
       uint totalItemCount = stockIds.current();
       uint itemCount = 0;
       uint currentIndex = 0;
 
       for (uint i = 0; i < totalItemCount; i++) {
-        if (stockList[i + 1].brandID == _brandId) {
+        if (stockList[i + 1].brandID == msg.sender) {
           itemCount += 1;
         }
       }
 
       Record[] memory items = new Record[](itemCount);
       for (uint i = 0; i < totalItemCount; i++) {
-        if (stockList[i + 1].brandID == _brandId) {
+        if (stockList[i + 1].brandID == msg.sender) {
           uint currentId = i + 1;
           Record storage currentItem = stockList[currentId];
           items[currentIndex] = currentItem;
@@ -81,20 +81,20 @@ contract Bookkeeper is ReentrancyGuard {
 
 
     /* Returns only stock uploaded by a respective business */
-    function fetchSales(address _brandId) public view returns (Record[] memory) {
+    function fetchSales() public view returns (Record[] memory) {
       uint totalItemCount = salesIds.current();
       uint itemCount = 0;
       uint currentIndex = 0;
 
       for (uint i = 0; i < totalItemCount; i++) {
-        if (salesList[i + 1].brandID == _brandId) {
+        if (salesList[i + 1].brandID == msg.sender) {
           itemCount += 1;
         }
       }
 
       Record[] memory items = new Record[](itemCount);
       for (uint i = 0; i < totalItemCount; i++) {
-        if (salesList[i + 1].brandID == _brandId) {
+        if (salesList[i + 1].brandID == msg.sender) {
           uint currentId = i + 1;
           Record storage currentItem = salesList[currentId];
           items[currentIndex] = currentItem;

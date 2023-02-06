@@ -20,10 +20,6 @@ import com.bookkeeperfvm.android.constants.Constants;
 import com.bookkeeperfvm.android.models.Brand;
 import com.bookkeeperfvm.android.models.Metric;
 import com.bookkeeperfvm.android.models.Record;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -43,8 +39,6 @@ public class SalesFragment extends Fragment {
     private RecordAdapter adapter;
     private Brand brand;
     private TextView textView;
-    private TextView subTextView;
-    private TextView subItemTextView;
     private AVLoadingIndicatorView progressBar;
 
     public SalesFragment() {
@@ -70,15 +64,16 @@ public class SalesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sales, container, false);
 
+        //Binding UI Elements with App LOgic
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         textView = view.findViewById(R.id.textView);
-        subTextView = view.findViewById(R.id.subTextView);
-        subItemTextView = view.findViewById(R.id.subItemTextView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireContext(), R.drawable.posts_divider)));
         recyclerView.addItemDecoration(divider);
+
+        //Setting up Adapter to showcase Sales Records
         adapter = new RecordAdapter(getContext(), objectList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -86,46 +81,60 @@ public class SalesFragment extends Fragment {
         return view;
     }
 
+    //Fetch Sales Records recorded on the FEVM via Firebase Functions
     private void fetchSales(){
-        progressBar.setVisibility(View.VISIBLE);
-        Map<String, Object> data = new HashMap<>();
-        data.put("key", brand.getPrivateKey());
-        data.put("recordType", Constants.SALES);
-        firebaseFunctions.getHttpsCallable(Constants.FETCH_SALES).call(data).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
+        try {
+            progressBar.setVisibility(View.VISIBLE);
 
-                ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
-                if (result != null){
-                    for (HashMap hashMap: result){
+            //Parse business private key as argument
+            Map<String, Object> data = new HashMap<>();
+            data.put("key", brand.getPrivateKey());
+            firebaseFunctions.getHttpsCallable(Constants.FETCH_SALES).call(data).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
 
-                        int recordId = Integer.parseInt(hashMap.get("recordId").toString());
-                        String title = hashMap.get("title").toString();
-                        String recordType = hashMap.get("recordType").toString();
-                        String timestamp = hashMap.get("timestamp").toString();
-                        long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
-                        int price = Integer.parseInt(hashMap.get("price").toString());
-                        int quantity = Integer.parseInt(hashMap.get("quantity").toString());
-                        int salePrice = Integer.parseInt(hashMap.get("salePrice").toString());
-                        String brandID = hashMap.get("brandID").toString();
+                    //Return data as an array and later loop over it to fetch the Sales Records
+                    ArrayList<HashMap> result = (ArrayList<HashMap>) task.getResult().getData();
+                    if (result != null){
+                        for (HashMap hashMap: result){
 
+                            int recordId = Integer.parseInt(hashMap.get("recordId").toString());
+                            String title = hashMap.get("title").toString();
+                            String recordType = hashMap.get("recordType").toString();
+                            String timestamp = hashMap.get("timestamp").toString();
+                            long recordDate = Long.parseLong(hashMap.get("recordDate").toString());
+                            int price = Integer.parseInt(hashMap.get("price").toString());
+                            int quantity = Integer.parseInt(hashMap.get("quantity").toString());
+                            int salePrice = Integer.parseInt(hashMap.get("salesPrice").toString());
+                            String brandID = hashMap.get("brandID").toString();
 
-                        Record record = new Record(recordId,title,recordType,timestamp,recordDate,price,quantity,salePrice,brandID);
-                        if (!objectList.contains(record)){
-                            objectList.add(record);
-                            progressBar.setVisibility(View.INVISIBLE);
-                            adapter.notifyDataSetChanged();
+                            //Map fetched records into Record Object
+                            Record record = new Record(recordId,title,recordType,timestamp,recordDate,price,quantity,salePrice,brandID);
+
+                            //Add Record to the list
+                            if (!objectList.contains(record)){
+                                objectList.add(record);
+                                postSalesTotal();
+
+                                //Hide the progress bar
+                                progressBar.setVisibility(View.INVISIBLE);
+
+                                //Notify the Adapter to Update the UI
+                                adapter.notifyDataSetChanged();
+                            }
                         }
+                    } else {
+                        Toast.makeText(requireActivity(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(requireContext(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
 
-            } else {
-                Toast.makeText(requireContext(), Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                } else {
+                    Toast.makeText(requireActivity(), "Sorry, There are no Sales Record Uploaded", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -142,31 +151,23 @@ public class SalesFragment extends Fragment {
         return DateFormat.format("dd MMMM yyy", cal).toString();
     }
 
-    private Metric fetchMetrics(List<Record> transactionList){
+    private int fetchSalesTotal(List<Record> transactionList){
         int total = 0;
-        int salesTotal = 0;
-        int stockTotal = 0;
         try {
             if (transactionList != null){
                 for (int i = 0; i< transactionList.size();i++){
                     Record record = transactionList.get(i);
-                    salesTotal += (record.getPrice() * record.getQuantity());
-                    stockTotal += (record.getSalePrice() * record.getQuantity());
-                    total += (salesTotal - stockTotal);
+                    total += (record.getPrice() * record.getQuantity());
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new Metric(salesTotal,stockTotal,total);
+        return total;
     }
 
-    private void postMetrics(){
-        textView.setText(getString(R.string.currency,Constants.CURRENCY, fetchMetrics(objectList).getSales()));
-        subTextView.setText(getString(R.string.currency,Constants.CURRENCY, fetchMetrics(objectList).getStock()));
-        subItemTextView.setText(getString(R.string.currency,Constants.CURRENCY, fetchMetrics(objectList).getProfit()));
-
-
+    private void postSalesTotal(){
+        textView.setText(getString(R.string.currency,Constants.CURRENCY, fetchSalesTotal(objectList)));
     }
 
 }

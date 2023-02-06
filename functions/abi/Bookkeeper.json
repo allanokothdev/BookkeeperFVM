@@ -137,13 +137,7 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_brandId",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"name": "fetchSales",
 		"outputs": [
 			{
@@ -203,13 +197,7 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_brandId",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"name": "fetchStocks",
 		"outputs": [
 			{

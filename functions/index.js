@@ -2,17 +2,20 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 
+const ethers = require("ethers");
+
 // Firebase
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-const ethers = require("ethers");
+// FEVM RPC
 const FilecoinRpc = "https://api.hyperspace.node.glif.io/rpc/v1";
 const provider = new ethers.providers.JsonRpcProvider(FilecoinRpc);
 
+// SMART CONTRACT DETAILS
 const BookkeeperABI = require("./abi/Bookkeeper.json");
-const BookkeeperContractAddress = "0x6523F56455647100d2F7eAAe00359e40E52dC1d3";
+const BookkeeperContractAddress = "0x049613465E605e541fcd49eA94beb9d1d7220378";
 
 
 // CREATE NEW WALLET ADDRESS
@@ -29,11 +32,10 @@ exports.createWallet = functions.https.onCall(() => {
 exports.fetchStocks = functions.https.onCall(async (_data, context) => {
   try {
     const privateKey = _data.key;
-    const brandId = _data.brandId;
     const signer = new ethers.Wallet(privateKey, provider);
     const bookkeeperContract = new ethers.Contract(BookkeeperContractAddress, BookkeeperABI, signer);
     // fetching the business records using the from the Bookkeeper contracts
-    const response = await bookkeeperContract.fetchStocks(brandId);
+    const response = await bookkeeperContract.fetchStocks();
     const records = [];
     await Promise.all(response.map(async (i) => {
       const item = {
@@ -50,6 +52,7 @@ exports.fetchStocks = functions.https.onCall(async (_data, context) => {
       records.push(item);
     }));
 
+    // RETURN LIST TO THE UI
     return records;
   } catch (error) {
     console.error(error);
@@ -63,11 +66,10 @@ exports.fetchStocks = functions.https.onCall(async (_data, context) => {
 exports.fetchSales = functions.https.onCall(async (_data, context) => {
   try {
     const privateKey = _data.key;
-    const brandId = _data.brandId;
     const signer = new ethers.Wallet(privateKey, provider);
     const bookkeeperContract = new ethers.Contract(BookkeeperContractAddress, BookkeeperABI, signer);
     // fetching the business records using the from the Bookkeeper contracts
-    const response = await bookkeeperContract.fetchSales(brandId);
+    const response = await bookkeeperContract.fetchSales();
     const records = [];
     await Promise.all(response.map(async (i) => {
       const item = {
@@ -97,12 +99,11 @@ exports.fetchSales = functions.https.onCall(async (_data, context) => {
 exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
   try {
     const privateKey = data.key;
-    const brandId = data.brandID;
     const signer = new ethers.Wallet(privateKey, provider);
     const bookkeeperContract = new ethers.Contract(BookkeeperContractAddress, BookkeeperABI, signer);
 
     // fetching the business records using the from the Bookkeeper contracts
-    const stockResponse = await bookkeeperContract.fetchStocks(brandId);
+    const stockResponse = await bookkeeperContract.fetchStocks();
     const totalStock = [];
     await Promise.all(stockResponse.map(async (i) => {
       const item = {
@@ -121,7 +122,7 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
 
 
     // fetching the business records using the from the Bookkeeper contracts
-    const salesResponse = await bookkeeperContract.fetchSales(brandId);
+    const salesResponse = await bookkeeperContract.fetchSales();
     const totalSales = [];
     await Promise.all(salesResponse.map(async (i) => {
       const item = {
@@ -143,20 +144,28 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
 
     // determine credit score based on sales to stock ratio
     let creditScore;
-    if (salesToStockRatio >= 2) {
-      creditScore = 5;
-    } else if (salesToStockRatio >= 1.5) {
-      creditScore = 4;
-    } else if (salesToStockRatio >= 1) {
-      creditScore = 3;
-    } else if (salesToStockRatio >= 0.5) {
-      creditScore = 2;
+
+    if (totalSales.length === 0 || totalStock.length === 0) {
+      creditScore = 0;
     } else {
-      creditScore = 1;
+      if (salesToStockRatio >= 2) {
+        creditScore = 5;
+      } else if (salesToStockRatio >= 1.5) {
+        creditScore = 4;
+      } else if (salesToStockRatio >= 1) {
+        creditScore = 3;
+      } else if (salesToStockRatio >= 0.5) {
+        creditScore = 2;
+      } else {
+        creditScore = 1;
+      }
     }
 
+
     // return credit score
-    return creditScore;
+    return {
+      score: creditScore.toString(),
+    };
   } catch (error) {
     console.error(error);
     // Re-throwing the error as an HttpsError so that the client gets the error details.
@@ -179,7 +188,11 @@ exports.createStock = functions.https.onCall(async (data, context) => {
     // Add New Business Stock
     const transaction = await bookkeeperContract.createStock(title, recordType, timestamp, price, quantity, salesPrice);
     const tx = await transaction.wait();
-    return "Success";
+    const confirmationLink = `https://beryx.zondax.ch/v1/search/fil/hyperspace/transactions/${tx.transactionHash}`;
+    console.log(tx);
+    return {
+      link: confirmationLink,
+    };
   } catch (error) {
     console.error(error);
     // Re-throwing the error as an HttpsError so that the client gets the error details.
@@ -199,9 +212,13 @@ exports.createSale = functions.https.onCall(async (data, context) => {
     const signer = new ethers.Wallet(privateKey, provider);
     const bookkeeperContract = new ethers.Contract(BookkeeperContractAddress, BookkeeperABI, signer);
     // Add New Business Sales Record
-    const transaction = await bookkeeperContract.createSale(title, recordType, timestamp, price, quantity, salesPrice);
+    const transaction = await bookkeeperContract.createSales(title, recordType, timestamp, price, quantity, salesPrice);
     const tx = await transaction.wait();
-    return "Success";
+    const confirmationLink = `https://beryx.zondax.ch/v1/search/fil/hyperspace/transactions/${tx.transactionHash}`;
+    console.log(tx);
+    return {
+      link: confirmationLink,
+    };
   } catch (error) {
     console.error(error);
     // Re-throwing the error as an HttpsError so that the client gets the error details.

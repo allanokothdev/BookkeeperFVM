@@ -4,7 +4,7 @@ Bookkeeper uses alternative data to improve credit scoring for sustainable women
 # Problem & Solution
 Women-owned Small and Medium Enterprises (WSMEs) in Africa are disproportionately affected by financial exclusion due to a variety of factors, including cultural and societal barriers, lack of collateral and credit history, and limited access to financial institutions. This is particularly true for women-owned businesses, which are twice as likely as men-owned businesses to be financially excluded.
 
-Bookkeeper is a software as a service (SaaS) product that uses alternative data (sales and stock, transactions, payment info data) to support credit scoring for WSMEs. By analyzing alternative data sources, including, transactions, and other payment info, sales, stock data, Bookkeeper can provide a more comprehensive and nuanced view of a WSME's creditworthiness. By leveraging AI and analytics, it can also improve the accuracy and efficiency of credit scoring and reduce biases in lending decisions, helping banks and financial institutions make informed and gender-conscious lending decisions.
+Bookkeeper is a product that uses alternative data to support credit scoring for WSMEs. By analyzing alternative data sources, including, transactions, and other payment info, sales, stock data, Bookkeeper can provide a more comprehensive and nuanced view of a WSME's creditworthiness. By leveraging AI and analytics, it can also improve the accuracy and efficiency of credit scoring and reduce biases in lending decisions, helping banks and financial institutions make informed and gender-conscious lending decisions.
 
 In addition to its primary goal of supporting credit scoring for WSMEs, Bookkeeper can also contribute to the goal of promoting sustainable finance and mitigating the impact of climate change by helping banks and financial institutions make informed and equitable lending decisions for WSMEs engaged in sustainable practices.
 
@@ -73,20 +73,26 @@ positive outcomes and promote gender equality.
 # Techstack
 Android JAVA - We developed the mobile app using Android JAVA, - Files are in the /app folder
 
-Firebase Firestore - We've used Firebase Firestore as Backend to store Business Details and support User Authentication
+Firebase Firestore - We used Firebase Firestore as Backend to store Business Details and support User Authentication
 
-Firebase Functions - We've integrated Firebase Functions to facilitate interactions between Mobile App and Blockchain ( Solidity Code) - Files are in the /functions folder.
+Firebase Functions - We integrated Firebase Functions (Javascript) to facilitate interactions between Mobile App and Blockchain ( Solidity Code) - Files are in the /functions folder.
 
 We have these functions
-- CreateSale
-- CreateStock
-- fetchSales
-- fetchStock
-- CalculateCreditScore
+- CreateSale - Publish Sale Records on the FEVM
+- CreateStock - Publish Stock Records on the FEVM
+- fetchSales - Fetches Sales Records from the FEVM
+- fetchStock - Fetched Stock Records from the FEVM
+- fetchCreditScore - Calculates Credit Score based on Sales and Stock data
 
 Blockchain - Hyperspace FEVM Testnet
 
 # Future Developments
+
+UI Usability Improvements to support Non-Technical User Onboarding like Sarah Muani
+
+Integrate Android Room Library to support local data persistence.
+
+Integration with Biconomy SDK to support Smart Account (where the developer pays for transactions), relieving the user the need to have FEVM Tokens for them to publish business Records
 
 Security - Shift towards Self-Custodial wallet to promote wallet data privacy
 
