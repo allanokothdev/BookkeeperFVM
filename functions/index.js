@@ -140,7 +140,7 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     }));
 
     // calculate sales to stock ratio
-    const salesToStockRatio = totalSales / totalStock;
+    const salesToStockRatio = await (totalSales / totalStock);
 
     // determine credit score based on sales to stock ratio
     let creditScore;
@@ -161,10 +161,8 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
       }
     }
 
-
-    // return credit score
     return {
-      score: creditScore.toString(),
+      credit: creditScore,
     };
   } catch (error) {
     console.error(error);
