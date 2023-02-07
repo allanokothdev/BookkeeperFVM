@@ -104,39 +104,21 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
 
     // fetching the business records using the from the Bookkeeper contracts
     const stockResponse = await bookkeeperContract.fetchStocks();
-    const totalStock = [];
+
+    let totalStock;
+
     await Promise.all(stockResponse.map(async (i) => {
-      const item = {
-        recordId: i.recordId.toString(),
-        title: i.title,
-        recordType: i.recordType,
-        timestamp: i.timestamp,
-        recordDate: i.recordDate.toString(),
-        price: i.price.toString(),
-        quantity: i.quantity.toString(),
-        salePrice: i.salesPrice.toString(),
-        brandID: i.brandID.toString(),
-      };
-      totalStock.push(item);
+      totalStock += (i.price * i.quantity);
     }));
 
 
     // fetching the business records using the from the Bookkeeper contracts
     const salesResponse = await bookkeeperContract.fetchSales();
-    const totalSales = [];
+
+    let totalSales;
+
     await Promise.all(salesResponse.map(async (i) => {
-      const item = {
-        recordId: i.recordId.toString(),
-        title: i.title,
-        recordType: i.recordType,
-        timestamp: i.timestamp,
-        recordDate: i.recordDate.toString(),
-        price: i.price.toString(),
-        quantity: i.quantity.toString(),
-        salePrice: i.salesPrice.toString(),
-        brandID: i.brandID.toString(),
-      };
-      totalSales.push(item);
+      totalSales += (i.price * i.quantity);
     }));
 
     // calculate sales to stock ratio
