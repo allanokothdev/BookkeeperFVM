@@ -106,8 +106,21 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     const stockResponse = await bookkeeperContract.fetchStocks();
 
     let totalStock;
+    const stocks = [];
 
     await Promise.all(stockResponse.map(async (i) => {
+      const item = {
+        recordId: i.recordId.toString(),
+        title: i.title,
+        recordType: i.recordType,
+        timestamp: i.timestamp,
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
+        brandID: i.brandID.toString(),
+      };
+      stocks.push(item);
       totalStock += (i.price * i.quantity);
     }));
 
@@ -116,8 +129,21 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     const salesResponse = await bookkeeperContract.fetchSales();
 
     let totalSales;
+    const sales = [];
 
     await Promise.all(salesResponse.map(async (i) => {
+      const item = {
+        recordId: i.recordId.toString(),
+        title: i.title,
+        recordType: i.recordType,
+        timestamp: i.timestamp,
+        recordDate: i.recordDate.toString(),
+        price: i.price.toString(),
+        quantity: i.quantity.toString(),
+        salePrice: i.salesPrice.toString(),
+        brandID: i.brandID.toString(),
+      };
+      sales.push(item);
       totalSales += (i.price * i.quantity);
     }));
 
@@ -127,7 +153,7 @@ exports.fetchCreditScore = functions.https.onCall(async (data, context) => {
     // determine credit score based on sales to stock ratio
     let creditScore;
 
-    if (totalSales.length === 0 || totalStock.length === 0) {
+    if (sales.length === 0 || stocks.length === 0) {
       creditScore = 0;
     } else {
       if (salesToStockRatio >= 2) {
