@@ -1,6 +1,8 @@
 # BookkeeperFVM
 Bookkeeper uses alternative data to improve credit scoring for sustainable women-owned businesses
 
+# Eth Global Showcase: https://ethglobal.com/showcase/bookkeeper-bb37w
+
 # Problem & Solution
 Women-owned Small and Medium Enterprises (WSMEs) in Africa are disproportionately affected by financial exclusion due to a variety of factors, including cultural and societal barriers, lack of collateral and credit history, and limited access to financial institutions. This is particularly true for women-owned businesses, which are twice as likely as men-owned businesses to be financially excluded.
 
